@@ -32,6 +32,8 @@ class PageController extends Controller
 
         $page->addMediaFromRequest('image')->toMediaCollection();
 
+        $page->retriveAudioUrl();
+
         return response()->json($page);
     }
 
@@ -40,9 +42,6 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        if(!$page->audio_url){
-           $page->retriveAudioUrl();
-        }
         return response()->json($page);
     }
 
@@ -57,6 +56,8 @@ class PageController extends Controller
             $page->clearMediaCollection();
             $page->addMediaFromRequest('image')->toMediaCollection();
         }
+
+        $page->retriveAudioUrl();
 
         return response()->json($page);
     }
