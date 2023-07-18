@@ -28,7 +28,15 @@ class PageController extends Controller
 
     public function store(StorePageRequest $request)
     {
-        $page = $this->getBook()->pages()->create($request->validated());
+        $page = null;
+
+        if ($request->model_type == 'story-book') {
+            $book = StoryBook::findOrFail(request()->model_id);
+            $page = $book->pages()->create($request->validated());
+        } else if ($request->model_type == 'listening-book') {
+            $book = ListeningBook::findOrFail(request()->model_id);
+            $page = $book->page()->create($request->validated());
+        }
 
         $page->addMediaFromRequest('image')->toMediaCollection();
 
@@ -52,7 +60,7 @@ class PageController extends Controller
     {
         $page->update(array_merge($request->validated(), ['audio_url' => null]));
 
-        if($request->has('image')){
+        if ($request->has('image')) {
             $page->clearMediaCollection();
             $page->addMediaFromRequest('image')->toMediaCollection();
         }
@@ -68,6 +76,6 @@ class PageController extends Controller
     public function destroy(Page $page)
     {
         $page->delete();
-        return  response()->json($page);
+        return response()->json($page);
     }
 }
