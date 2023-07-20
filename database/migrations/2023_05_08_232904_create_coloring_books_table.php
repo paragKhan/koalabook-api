@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('coloring_books', function (Blueprint $table) {
             $table->id();
+            $table->text('title');
             $table->enum('subscription_type', ['free', 'paid'])->default('free');
             $table->timestamps();
         });

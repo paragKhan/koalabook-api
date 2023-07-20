@@ -23,6 +23,7 @@ class UpdateColoringBookRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => 'string',
             'categories' => 'string',
             'subscription_type' => [Rule::in(['free', 'paid'])],
             'image' => 'image|mimes:jpeg,jpg,png'

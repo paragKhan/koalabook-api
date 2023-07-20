@@ -28,7 +28,7 @@ class ColoringBookController extends Controller
      */
     public function store(StoreColoringBookRequest $request)
     {
-        $book = ColoringBook::create();
+        $book = ColoringBook::create($request->except('categories'));
 
         $book->attachTags(explode(',', $request->input('categories')));
         $book->addMediaFromRequest('image')->toMediaCollection();

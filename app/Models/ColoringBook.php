@@ -13,6 +13,7 @@ class ColoringBook extends Model implements HasMedia
     use HasFactory, HasTags, InteractsWithMedia;
 
     protected $fillable = [
+        'title',
         'subscription_type'
     ];
 

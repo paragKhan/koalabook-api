@@ -23,6 +23,7 @@ class StoreColoringBookRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => 'required|string',
             'categories' => 'required|string',
             'subscription_type' => ['required', Rule::in(['free', 'paid'])],
             'image' => 'required|image|mimes:jpeg,jpg,png'
