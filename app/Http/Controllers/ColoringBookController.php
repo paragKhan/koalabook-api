@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ColoringBook;
 use App\Http\Requests\StoreColoringBookRequest;
 use App\Http\Requests\UpdateColoringBookRequest;
+use Illuminate\Http\Request;
 use Spatie\Tags\Tag;
 
 class ColoringBookController extends Controller
@@ -17,9 +18,13 @@ class ColoringBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = ColoringBook::paginate(20);
+        if ($request->has('c') && $request->c) {
+            $books = ColoringBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+        } else {
+            $books = ColoringBook::paginate(20);
+        }
         return response()->json($books);
     }
 
@@ -60,7 +65,7 @@ class ColoringBookController extends Controller
             $coloringBook->syncTagsWithType($tags, 'coloring-book');
         }
 
-        if($request->has('image')){
+        if ($request->has('image')) {
             $coloringBook->clearMediaCollection();
             $coloringBook->addMediaFromRequest('image')->toMediaCollection();
         }
@@ -78,7 +83,8 @@ class ColoringBookController extends Controller
         return response()->json($coloringBook);
     }
 
-    public function getCategories(){
+    public function getCategories()
+    {
         $categories = Tag::getWithType('coloring-book')->pluck('name');
 
         return response()->json($categories);

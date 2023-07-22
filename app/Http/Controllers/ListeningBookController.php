@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListeningBook;
 use App\Http\Requests\StoreListeningBookRequest;
 use App\Http\Requests\UpdateListeningBookRequest;
+use Illuminate\Http\Request;
 use Spatie\Tags\Tag;
 
 class ListeningBookController extends Controller
@@ -16,9 +17,13 @@ class ListeningBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = ListeningBook::paginate(20);
+        if ($request->has('c') && $request->c) {
+            $books = ListeningBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+        } else {
+            $books = ListeningBook::paginate(20);
+        }
 
         return response()->json($books);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StoryBook;
 use App\Http\Requests\StoreStoryBookRequest;
 use App\Http\Requests\UpdateStoryBookRequest;
+use Illuminate\Http\Request;
 use Spatie\Tags\Tag;
 
 class StoryBookController extends Controller
@@ -17,9 +18,13 @@ class StoryBookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $books = StoryBook::paginate(20);
+        if ($request->has('c') && $request->c) {
+            $books = StoryBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+        } else {
+            $books = StoryBook::paginate(20);
+        }
 
         return response()->json($books);
     }
