@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\StoryBook;
 use App\Http\Requests\StoreStoryBookRequest;
 use App\Http\Requests\UpdateStoryBookRequest;
+use Spatie\Tags\Tag;
 
 class StoryBookController extends Controller
 {
@@ -30,7 +31,9 @@ class StoryBookController extends Controller
     {
         $book = StoryBook::create($request->except('categories'));
 
-        $book->attachTags(explode(',', $request->input('categories')), "kids-book");
+        $trimmed = str_replace(' ', '', $request->categories);
+        $tags = explode(',', $trimmed);
+        $book->attachTags($tags, 'story-book');
 
         $book->addMediaFromRequest('cover_image')->toMediaCollection();
 
@@ -53,7 +56,9 @@ class StoryBookController extends Controller
         $storyBook->update($request->except('categories'));
 
         if ($request->has('categories')) {
-            $storyBook->syncTagsWithType(explode(',', $request->input('categories')), 'kids-book');
+            $trimmed = str_replace(' ', '', $request->categories);
+            $tags = explode(',', $trimmed);
+            $storyBook->syncTagsWithType($tags, 'story-book');
         }
 
         if ($request->has('cover_image')) {
@@ -72,5 +77,11 @@ class StoryBookController extends Controller
         $storyBook->delete();
 
         return response()->json($storyBook);
+    }
+
+    public function getCategories(){
+        $categories = Tag::getWithType('story-book')->pluck('name');
+
+        return response()->json($categories);
     }
 }

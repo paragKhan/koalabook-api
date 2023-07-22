@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListeningBook;
 use App\Http\Requests\StoreListeningBookRequest;
 use App\Http\Requests\UpdateListeningBookRequest;
+use Spatie\Tags\Tag;
 
 class ListeningBookController extends Controller
 {
@@ -29,7 +30,9 @@ class ListeningBookController extends Controller
     {
         $book = ListeningBook::create($request->except('categories'));
 
-        $book->attachTags(explode(',', $request->input('categories')));
+        $trimmed = str_replace(' ', '', $request->categories);
+        $tags = explode(',', $trimmed);
+        $book->attachTags($tags, 'listening-book');
 
         $book->addMediaFromRequest('cover_image')->toMediaCollection();
 
@@ -52,7 +55,9 @@ class ListeningBookController extends Controller
         $listeningBook->update($request->except('categories'));
 
         if($request->has('categories')){
-            $listeningBook->syncTags(explode(',', $request->input('categories')));
+            $trimmed = str_replace(' ', '', $request->categories);
+            $tags = explode(',', $trimmed);
+            $listeningBook->syncTagsWithType($tags, 'listening-book');
         }
 
         if($request->has('cover_image')){
@@ -71,5 +76,11 @@ class ListeningBookController extends Controller
         $listeningBook->delete();
 
         return response()->json($listeningBook);
+    }
+
+    public function getCategories(){
+        $categories = Tag::getWithType('listening-book')->pluck('name');
+
+        return response()->json($categories);
     }
 }

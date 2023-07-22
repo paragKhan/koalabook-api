@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ColoringBook;
 use App\Http\Requests\StoreColoringBookRequest;
 use App\Http\Requests\UpdateColoringBookRequest;
+use Spatie\Tags\Tag;
 
 class ColoringBookController extends Controller
 {
@@ -19,7 +20,6 @@ class ColoringBookController extends Controller
     public function index()
     {
         $books = ColoringBook::paginate(20);
-
         return response()->json($books);
     }
 
@@ -30,7 +30,10 @@ class ColoringBookController extends Controller
     {
         $book = ColoringBook::create($request->except('categories'));
 
-        $book->attachTags(explode(',', $request->input('categories')));
+        $trimmed = str_replace(' ', '', $request->categories);
+        $tags = explode(',', $trimmed);
+        $book->attachTags($tags, 'coloring-book');
+
         $book->addMediaFromRequest('image')->toMediaCollection();
 
         return response()->json($book);
@@ -52,7 +55,9 @@ class ColoringBookController extends Controller
         $coloringBook->update($request->except('categories'));
 
         if ($request->has('categories')) {
-            $coloringBook->syncTags(explode(',', $request->input('categories')));
+            $trimmed = str_replace(' ', '', $request->categories);
+            $tags = explode(',', $trimmed);
+            $coloringBook->syncTagsWithType($tags, 'coloring-book');
         }
 
         if($request->has('image')){
@@ -71,5 +76,11 @@ class ColoringBookController extends Controller
         $coloringBook->delete();
 
         return response()->json($coloringBook);
+    }
+
+    public function getCategories(){
+        $categories = Tag::getWithType('coloring-book')->pluck('name');
+
+        return response()->json($categories);
     }
 }
