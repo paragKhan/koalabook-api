@@ -58,7 +58,7 @@ class PageController extends Controller
      */
     public function update(UpdatePageRequest $request, Page $page)
     {
-        $page->update(array_merge($request->validated(), ['audio_url' => null]));
+        $page->update($request->validated());
 
         if ($request->has('image')) {
             $page->clearMediaCollection();

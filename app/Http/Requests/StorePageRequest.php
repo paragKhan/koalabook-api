@@ -31,16 +31,8 @@ class StorePageRequest extends FormRequest
                     : Rule::exists('listening_books', 'id')
             ],
             'text' => 'required|string',
-            'audio_url' => 'required|url|exclude',
+            'audio_id' => 'required|string',
             'image' => 'required|image|mimes:jpeg,jpg,png'
         ];
-    }
-
-    public function validated($key = null, $default = null)
-    {
-        preg_match('/\d+/', $this->audio_url, $matches);
-        $audio_id = $matches[0];
-
-        return array_merge(parent::validated(), ['audio_id' => $audio_id]);
     }
 }
