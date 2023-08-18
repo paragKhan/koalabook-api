@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class StoreUserRequest extends FormRequest
 {
@@ -23,9 +24,13 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:50',
+            'fname' => 'required|string|min:3|max:50',
+            'lname' => 'required|string|min:3|max:50',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:50'
+            'password' => 'required|string|min:6|max:50',
+            'address' => 'required|string|min:3|max:100',
+            'zip' => 'required|string|min:3|max:10',
+            'country' => ['required', 'string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])]
         ];
     }
 

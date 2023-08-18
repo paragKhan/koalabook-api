@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -23,9 +24,13 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'string|min:3|max:50',
+            'fname' => 'required|string|min:3|max:50',
+            'lname' => 'required|string|min:3|max:50',
             'email' => 'email|unique:users,email,' . $this->user->id,
-            'password' => 'string|min:6|max:50'
+            'password' => 'string|min:6|max:50',
+            'address' => 'string|min:3|max:100',
+            'zip' => 'string|min:3|max:10',
+            'country' => ['string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])]
         ];
     }
 
