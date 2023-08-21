@@ -24,7 +24,7 @@ class StoryBookPolicy
         if($storyBook->subscription_type == 'free')
             return true;
 
-        return $user && $user->can('view-paid-book');
+        return $user && $user->subscribed;
 
     }
 
@@ -33,7 +33,7 @@ class StoryBookPolicy
      */
     public function create(User $storyBook): bool
     {
-        return $storyBook->can('create-book');
+        return false;
     }
 
     /**
@@ -41,7 +41,7 @@ class StoryBookPolicy
      */
     public function update(User $user, StoryBook $storyBook): bool
     {
-        return $user->can('update-book');
+        return false;
     }
 
     /**
@@ -49,6 +49,6 @@ class StoryBookPolicy
      */
     public function delete(User $user, StoryBook $storyBook): bool
     {
-        return $user->can('delete-book');
+        return false;
     }
 }

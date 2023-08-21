@@ -23,7 +23,7 @@ class ListeningBookPolicy
         if($listeningBook->subscription_type == 'free')
             return true;
 
-        return $user && $user->can('view-paid-book');
+        return $user && $user->subscribed;
     }
 
     /**
@@ -31,7 +31,7 @@ class ListeningBookPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create-book');
+        return false;
     }
 
     /**
@@ -39,7 +39,7 @@ class ListeningBookPolicy
      */
     public function update(User $user, ListeningBook $listeningBook): bool
     {
-        return $user->can('update-book');
+        return false;
     }
 
     /**
@@ -47,6 +47,6 @@ class ListeningBookPolicy
      */
     public function delete(User $user, ListeningBook $listeningBook): bool
     {
-        return $user->can('delete-book');
+        return false;
     }
 }

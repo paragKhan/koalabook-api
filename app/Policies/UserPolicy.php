@@ -12,7 +12,7 @@ class UserPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view-any-user');
+        return false;
     }
 
     /**
@@ -20,10 +20,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        if(!$model->hasRole('user'))
-            return false;
-
-        return $user->can('view-user');
+        return false;
     }
 
     /**
@@ -31,7 +28,7 @@ class UserPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('crete-user');
+        return false;
     }
 
     /**
@@ -39,10 +36,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        if(!$model->hasRole('user'))
-            return false;
-
-        return $user->can('update-user');
+        return false;
     }
 
     /**
@@ -50,8 +44,6 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        if(!$model->hasRole('user'))
-            return false;
-        return $user->can('delete-user');
+        return false;
     }
 }
