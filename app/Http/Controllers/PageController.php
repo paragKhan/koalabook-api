@@ -50,7 +50,7 @@ class PageController extends Controller
      */
     public function show(Page $page)
     {
-        return response()->json($page);
+        return response()->json($page->load('book'));
     }
 
     /**

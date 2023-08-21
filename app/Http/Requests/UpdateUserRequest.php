@@ -16,6 +16,11 @@ class UpdateUserRequest extends FormRequest
         return true;
     }
 
+    public function prepareForValidation()
+    {
+        $this->merge(['user_id' => auth()->user()->hasRole('user') ? auth()->id() : $this->user->id]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,13 +29,14 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fname' => 'required|string|min:3|max:50',
-            'lname' => 'required|string|min:3|max:50',
-            'email' => 'email|unique:users,email,' . $this->user->id,
+            'fname' => 'string|min:3|max:50',
+            'lname' => 'string|min:3|max:50',
+            'email' => 'email|unique:users,email,' . $this->user_id,
             'password' => 'string|min:6|max:50',
             'address' => 'string|min:3|max:100',
             'zip' => 'string|min:3|max:10',
-            'country' => ['string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])]
+            'country' => ['string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])],
+            'image' => 'image|mimes:jpeg,jpg,png'
         ];
     }
 

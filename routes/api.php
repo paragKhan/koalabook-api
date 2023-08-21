@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColoringBookController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
 use App\Http\Controllers\SubscriptionPlanController;
@@ -24,7 +25,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'userRegister']);
     Route::post('login', [AuthController::class, 'userLogin']);
+
     //todo: include email verification and forgot password and profile update routes
+
+    Route::middleware('auth:sanctum')->group(function(){
+        Route::get('profile', [ProfileController::class, 'getProfile']);
+        Route::put('profile', [ProfileController::class, 'updateProfile']);
+    });
 
     Route::middleware('guest_or_user')->group(function () {
         Route::get('story-books/get-categories', [StoryBookController::class, 'getCategories']);
@@ -38,6 +45,7 @@ Route::prefix('user')->group(function () {
 
         Route::apiResource('subscription-plans', SubscriptionPlanController::class)->only('index');
     });
+
 });
 
 Route::prefix('admin')->group(function () {
