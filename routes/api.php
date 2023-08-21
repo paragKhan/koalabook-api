@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColoringBookController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
 use App\Http\Controllers\UserController;
@@ -33,6 +34,8 @@ Route::prefix('user')->group(function () {
 
         Route::get('coloring-books/get-categories', [ColoringBookController::class, 'getCategories']);
         Route::apiResource('coloring-books', ColoringBookController::class)->only('index', 'show');
+
+        Route::apiResource('plans', PlanController::class)->only('index');
     });
 });
 
@@ -45,5 +48,6 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('listening-books', ListeningBookController::class);
         Route::apiResource('pages', PageController::class)->except('index');
         Route::apiResource('coloring-books', ColoringBookController::class);
+        Route::apiResource('plans', PlanController::class);
     });
 });
