@@ -21,9 +21,9 @@ class StoryBookController extends Controller
     public function index(Request $request)
     {
         if ($request->has('c') && $request->c) {
-            $books = StoryBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+            $books = StoryBook::withAnyTagsOfAnyType([$request->c])->paginate(20)->withQueryString();
         } else {
-            $books = StoryBook::paginate(20);
+            $books = StoryBook::paginate(20)->withQueryString();
         }
 
         return response()->json($books);

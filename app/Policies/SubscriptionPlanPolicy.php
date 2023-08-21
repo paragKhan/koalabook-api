@@ -3,15 +3,15 @@
 namespace App\Policies;
 
 use Illuminate\Auth\Access\Response;
-use App\Models\Plan;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
 
-class PlanPolicy
+class SubscriptionPlanPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(?User $user): bool
     {
         return true;
     }
@@ -19,9 +19,9 @@ class PlanPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Plan $plan): bool
+    public function view(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -35,7 +35,7 @@ class PlanPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Plan $plan): bool
+    public function update(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class PlanPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Plan $plan): bool
+    public function delete(User $user, SubscriptionPlan $subscriptionPlan): bool
     {
         return false;
     }

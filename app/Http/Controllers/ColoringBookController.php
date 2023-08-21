@@ -21,9 +21,9 @@ class ColoringBookController extends Controller
     public function index(Request $request)
     {
         if ($request->has('c') && $request->c) {
-            $books = ColoringBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+            $books = ColoringBook::withAnyTagsOfAnyType([$request->c])->paginate(20)->withQueryString();
         } else {
-            $books = ColoringBook::paginate(20);
+            $books = ColoringBook::paginate(20)->withQueryString();
         }
         return response()->json($books);
     }

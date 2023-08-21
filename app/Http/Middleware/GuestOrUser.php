@@ -16,10 +16,9 @@ class GuestOrUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(auth('sanctum')->check()){
+        if(Auth::guard('sanctum')->check()){
             Auth::shouldUse('sanctum');
         }
-
         return $next($request);
     }
 }

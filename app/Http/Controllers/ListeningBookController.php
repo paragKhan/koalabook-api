@@ -20,9 +20,9 @@ class ListeningBookController extends Controller
     public function index(Request $request)
     {
         if ($request->has('c') && $request->c) {
-            $books = ListeningBook::withAnyTagsOfAnyType([$request->c])->paginate(20);
+            $books = ListeningBook::withAnyTagsOfAnyType([$request->c])->paginate(20)->withQueryString();
         } else {
-            $books = ListeningBook::paginate(20);
+            $books = ListeningBook::paginate(20)->withQueryString();
         }
 
         return response()->json($books);
