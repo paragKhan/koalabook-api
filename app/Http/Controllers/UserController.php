@@ -61,4 +61,8 @@ class UserController extends Controller
 
         return response()->json($user);
     }
+
+    public function hasSubscription(){
+        return array_rand([true, false]);
+    }
 }

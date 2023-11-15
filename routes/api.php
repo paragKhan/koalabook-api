@@ -31,6 +31,7 @@ Route::prefix('user')->group(function () {
     Route::middleware('auth:sanctum')->group(function(){
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
+        Route::get('has-subscription', [UserController::class, 'hasSubscription']);
     });
 
     Route::middleware('guest_or_user')->group(function () {
