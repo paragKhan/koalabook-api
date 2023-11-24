@@ -6,9 +6,9 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\GuestOrUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('st-webhook', [StripeWebhookController::class, 'handleWebhook']);
 
 Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'userRegister']);
