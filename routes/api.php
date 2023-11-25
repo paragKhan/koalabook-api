@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('st-webhook', [StripeWebhookController::class, 'handleWebhook']);
-
 Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'userRegister']);
     Route::post('login', [AuthController::class, 'userLogin']);
@@ -48,7 +46,6 @@ Route::prefix('user')->group(function () {
 
         Route::apiResource('subscription-plans', SubscriptionPlanController::class)->only('index');
     });
-
 });
 
 Route::prefix('admin')->group(function () {
@@ -63,3 +60,5 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('subscription-plans', SubscriptionPlanController::class);
     });
 });
+
+Route::post('st-webhook', [StripeWebhookController::class, 'handleWebhook']);
