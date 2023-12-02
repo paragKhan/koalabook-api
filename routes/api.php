@@ -6,9 +6,9 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
+use App\Http\Controllers\StripeWebhookController;
 use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\UserController;
-use App\Http\Middleware\GuestOrUser;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +32,8 @@ Route::prefix('user')->group(function () {
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
         Route::get('has-subscription', [UserController::class, 'hasSubscription']);
+        Route::get('subscription-plans', [SubscriptionPlanController::class, 'index']);
+        Route::get('subscription-plans/{subscriptionPlan}/create-checkout-link', [SubscriptionPlanController::class, 'createCheckoutLink']);
     });
 
     Route::middleware('guest_or_user')->group(function () {
@@ -43,10 +45,7 @@ Route::prefix('user')->group(function () {
 
         Route::get('coloring-books/get-categories', [ColoringBookController::class, 'getCategories']);
         Route::apiResource('coloring-books', ColoringBookController::class)->only('index', 'show');
-
-        Route::apiResource('subscription-plans', SubscriptionPlanController::class)->only('index');
     });
-
 });
 
 Route::prefix('admin')->group(function () {
@@ -61,3 +60,5 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('subscription-plans', SubscriptionPlanController::class);
     });
 });
+
+Route::stripeWebhooks('st-webhook');

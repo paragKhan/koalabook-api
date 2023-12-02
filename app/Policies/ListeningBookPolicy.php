@@ -23,7 +23,7 @@ class ListeningBookPolicy
         if($listeningBook->subscription_type == 'free')
             return true;
 
-        return $user && $user->subscribed;
+        return $user && $user->subscribed();
     }
 
     /**

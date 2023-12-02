@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Jobs\HandleUserRegistered;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -12,6 +13,8 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
         $user->assignRole('user');
+
+        HandleUserRegistered::dispatch($user);
 
         //todo: handle user image here
 

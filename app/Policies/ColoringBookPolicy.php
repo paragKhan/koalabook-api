@@ -24,7 +24,7 @@ class ColoringBookPolicy
         if($coloringBook->subscription_type == 'free')
             return true;
 
-        return $user && $user->subscribed;
+        return $user && $user->subscribed();
     }
 
     /**

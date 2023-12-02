@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubscriptionPlan;
-use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSubscriptionPlanRequest;
 use App\Http\Requests\UpdateSubscriptionPlanRequest;
-use App\Policies\SubscriptionPlanPolicy;
+use Stripe\Checkout\Session;
+use Stripe\Stripe;
+use Stripe\StripeClient;
 
 class SubscriptionPlanController extends Controller
 {
@@ -60,5 +61,20 @@ class SubscriptionPlanController extends Controller
         $subscriptionPlan->delete();
 
         return response()->json($subscriptionPlan);
+    }
+
+    public function createCheckoutLink(SubscriptionPlan $subscriptionPlan){
+        $session = \Auth::user()->newSubscription('default', $subscriptionPlan->st_price)
+            ->trialDays($subscriptionPlan->trial_days)
+            ->checkout([
+            'success_url' => 'https://koalabooks.de',
+            'cancel_url' => 'https://koalabooks.de',
+        ])->asStripeCheckoutSession();
+
+        /*
+        todo if the user already subscribed before send him portal link instead of checkout link
+        */
+
+        return response()->json(['checkout_link' => $session->url]);
     }
 }

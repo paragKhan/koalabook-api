@@ -10,7 +10,7 @@ class SubscriptionPlan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'st_payment_link',
+        'st_price',
         'name',
         'price',
         'trial_days',
