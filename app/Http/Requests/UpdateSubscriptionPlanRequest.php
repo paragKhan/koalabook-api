@@ -22,7 +22,7 @@ class UpdateSubscriptionPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'st_payment_link' => 'url',
+            'st_price' => 'string',
             'name' => 'string',
             'price' => 'numeric',
             'trial_days' => 'integer',

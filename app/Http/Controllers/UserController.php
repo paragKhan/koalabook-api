@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Jobs\HandleUserRegistered;
 use App\Models\User;
 
 class UserController extends Controller
@@ -30,6 +31,8 @@ class UserController extends Controller
     {
         $user = User::create($request->validated());
         $user->assignRole('user');
+
+        HandleUserRegistered::dispatch($user);
 
         return response()->json($user);
     }
@@ -63,6 +66,6 @@ class UserController extends Controller
     }
 
     public function hasSubscription(){
-        return array_rand([true, false]);
+        return response()->json(['status' => auth()->user()->subscribed()]);
     }
 }

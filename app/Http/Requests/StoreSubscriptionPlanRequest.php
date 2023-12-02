@@ -22,7 +22,7 @@ class StoreSubscriptionPlanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'st_payment_link' => 'required|url',
+            'st_price' => 'required|string',
             'name' => 'required|string',
             'price' => 'required|numeric',
             'trial_days' => 'required|integer',
