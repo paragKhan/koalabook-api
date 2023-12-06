@@ -32,6 +32,7 @@ Route::prefix('user')->group(function () {
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
         Route::get('has-subscription', [UserController::class, 'hasSubscription']);
+        Route::get('create-billing-portal-session', [UserController::class, 'createBillingPortalSession']);
         Route::get('subscription-plans', [SubscriptionPlanController::class, 'index']);
         Route::get('subscription-plans/{subscriptionPlan}/create-checkout-link', [SubscriptionPlanController::class, 'createCheckoutLink']);
     });
