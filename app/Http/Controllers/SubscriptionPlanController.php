@@ -71,8 +71,8 @@ class SubscriptionPlanController extends Controller
         $session = \Auth::user()->newSubscription('default', $subscriptionPlan->st_price)
             ->trialDays($subscriptionPlan->trial_days)
             ->checkout([
-            'success_url' => 'https://koalabooks.de',
-            'cancel_url' => 'https://koalabooks.de',
+            'success_url' => 'https://koalabooks.de/dankeschoen-seite',
+            'cancel_url' => 'https://koalabooks.de/zahlung-fehlgeschlagen',
         ])->asStripeCheckoutSession();
 
         /*
