@@ -64,6 +64,10 @@ class SubscriptionPlanController extends Controller
     }
 
     public function createCheckoutLink(SubscriptionPlan $subscriptionPlan){
+        if(\Auth::user()->subscribed()){
+             return \Auth::user()->billingPortalUrl("https://koalabooks.de");
+        }
+
         $session = \Auth::user()->newSubscription('default', $subscriptionPlan->st_price)
             ->trialDays($subscriptionPlan->trial_days)
             ->checkout([

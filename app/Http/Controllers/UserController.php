@@ -68,4 +68,10 @@ class UserController extends Controller
     public function hasSubscription(){
         return response()->json(['status' => auth()->user()->subscribed()]);
     }
+
+    public function createBillingPortalSession(){
+        $portal_url =  \Auth::user()->billingPortalUrl("https://koalabooks.de");
+
+        return response()->json(['portal_url' => $portal_url]);
+    }
 }
