@@ -75,10 +75,6 @@ class SubscriptionPlanController extends Controller
             'cancel_url' => 'https://koalabooks.de/zahlung-fehlgeschlagen',
         ])->asStripeCheckoutSession();
 
-        /*
-        todo if the user already subscribed before send him portal link instead of checkout link
-        */
-
         return response()->json(['checkout_link' => $session->url]);
     }
 }
