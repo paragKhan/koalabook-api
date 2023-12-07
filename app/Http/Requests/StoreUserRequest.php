@@ -29,6 +29,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6|max:50',
             'address' => 'required|string|min:3|max:100',
+            'city' => 'required|string|min:3|max:50',
             'zip' => 'required|string|min:3|max:10',
             'country' => ['required', 'string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])]
         ];

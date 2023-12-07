@@ -34,6 +34,7 @@ class UpdateUserRequest extends FormRequest
             'email' => 'email|unique:users,email,' . $this->user_id,
             'password' => 'string|min:6|max:50',
             'address' => 'string|min:3|max:100',
+            'city' => 'string|min:3|max:50',
             'zip' => 'string|min:3|max:10',
             'country' => ['string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])],
             'image' => 'image|mimes:jpeg,jpg,png'
