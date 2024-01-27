@@ -14509,30 +14509,6 @@
                         /** @var \Illuminate\Routing\Router $instance */
                         return $instance->macroCall($method, $parameters);
         }
-                    /**
-         * 
-         *
-         * @see \Spatie\StripeWebhooks\StripeWebhooksServiceProvider::configurePackage()
-         * @param mixed $url
-         * @static 
-         */ 
-        public static function stripeWebhooks($url)
-        {
-                        return \Illuminate\Routing\Router::stripeWebhooks($url);
-        }
-                    /**
-         * 
-         *
-         * @see \Spatie\WebhookClient\WebhookClientServiceProvider::packageBooted()
-         * @param string $url
-         * @param string $name
-         * @param mixed $method
-         * @static 
-         */ 
-        public static function webhooks($url, $name = 'default', $method = 'post')
-        {
-                        return \Illuminate\Routing\Router::webhooks($url, $name, $method);
-        }
          
     }
             /**
@@ -19040,39 +19016,32 @@
      
 }
 
-    namespace Illuminate\Routing { 
+    namespace Illuminate\Database\Eloquent\Factories { 
             /**
      * 
      *
-     * @mixin \Illuminate\Routing\RouteRegistrar
+     * @template TModel of \Illuminate\Database\Eloquent\Model
+     * @method $this trashed()
      */ 
-        class Router {
+        class Factory {
                     /**
          * 
          *
-         * @see \Spatie\StripeWebhooks\StripeWebhooksServiceProvider::configurePackage()
-         * @param mixed $url
+         * @see \Spatie\Translatable\TranslatableServiceProvider::packageRegistered()
+         * @param array|string $locales
+         * @param mixed|null $value
          * @static 
          */ 
-        public static function stripeWebhooks($url)
+        public static function translations($locales, $value)
         {
-                        return \Illuminate\Routing\Router::stripeWebhooks($url);
-        }
-                    /**
-         * 
-         *
-         * @see \Spatie\WebhookClient\WebhookClientServiceProvider::packageBooted()
-         * @param string $url
-         * @param string $name
-         * @param mixed $method
-         * @static 
-         */ 
-        public static function webhooks($url, $name = 'default', $method = 'post')
-        {
-                        return \Illuminate\Routing\Router::webhooks($url, $name, $method);
+                        return \Illuminate\Database\Eloquent\Factories\Factory::translations($locales, $value);
         }
          
     }
+     
+}
+
+    namespace Illuminate\Routing { 
             /**
      * 
      *
@@ -19099,31 +19068,6 @@
         public static function permission($permissions = [])
         {
                         return \Illuminate\Routing\Route::permission($permissions);
-        }
-         
-    }
-     
-}
-
-    namespace Illuminate\Database\Eloquent\Factories { 
-            /**
-     * 
-     *
-     * @template TModel of \Illuminate\Database\Eloquent\Model
-     * @method $this trashed()
-     */ 
-        class Factory {
-                    /**
-         * 
-         *
-         * @see \Spatie\Translatable\TranslatableServiceProvider::packageRegistered()
-         * @param array|string $locales
-         * @param mixed|null $value
-         * @static 
-         */ 
-        public static function translations($locales, $value)
-        {
-                        return \Illuminate\Database\Eloquent\Factories\Factory::translations($locales, $value);
         }
          
     }
