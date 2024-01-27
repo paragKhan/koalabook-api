@@ -4,10 +4,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColoringBookController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RCWebhookController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
-use App\Http\Controllers\StripeWebhookController;
-use App\Http\Controllers\SubscriptionPlanController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,15 +25,18 @@ Route::prefix('user')->group(function () {
     Route::post('register', [AuthController::class, 'userRegister']);
     Route::post('login', [AuthController::class, 'userLogin']);
 
-    //todo: include email verification and forgot password and profile update routes
+    Route::post("send-reset-password-otp", [AuthController::class, 'sendUserPasswordResetOTP']);
+    Route::post("verify-reset-password-otp", [AuthController::class, 'verifyUserPasswordResetOTP']);
+    Route::post('reset-password', [AuthController::class, 'resetUserPassword']);
 
-    Route::middleware('auth:sanctum')->group(function(){
+    //todo: include email verification
+
+    Route::middleware('auth:sanctum')->group(function () {
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
+        Route::delete('profile', [ProfileController::class, 'deleteProfile']);
         Route::get('has-subscription', [UserController::class, 'hasSubscription']);
         Route::get('create-billing-portal-session', [UserController::class, 'createBillingPortalSession']);
-        Route::get('subscription-plans', [SubscriptionPlanController::class, 'index']);
-        Route::get('subscription-plans/{subscriptionPlan}/create-checkout-link', [SubscriptionPlanController::class, 'createCheckoutLink']);
     });
 
     Route::middleware('guest_or_user')->group(function () {
@@ -58,8 +60,8 @@ Route::prefix('admin')->group(function () {
         Route::apiResource('listening-books', ListeningBookController::class);
         Route::apiResource('pages', PageController::class)->except('index');
         Route::apiResource('coloring-books', ColoringBookController::class);
-        Route::apiResource('subscription-plans', SubscriptionPlanController::class);
     });
 });
 
-Route::stripeWebhooks('st-webhook');
+Route::post('webhook', [RCWebhookController::class, 'handleWebhook']);
+

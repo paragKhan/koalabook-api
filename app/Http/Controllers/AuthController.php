@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Jobs\HandleUserRegistered;
+use App\Mail\SendPasswordResetOTP;
 use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -48,5 +50,20 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Invalid credentials.'], 401);
+    }
+
+    public function sendUserPasswordResetOTP()
+    {
+        Mail::to("xenaser923@roborena.com")->send(new SendPasswordResetOTP("xenaser923@roborena.com"));
+    }
+
+    public function verifyUserPasswordResetOTP()
+    {
+
+    }
+
+    public function resetUserPassword()
+    {
+
     }
 }

@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Cashier\Billable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -14,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia, Billable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
     protected $guard_name = 'sanctum';
 
@@ -31,7 +30,8 @@ class User extends Authenticatable implements HasMedia
         'address',
         'city',
         'zip',
-        'country'
+        'country',
+        'subscription_expires_at'
     ];
 
     /**
@@ -59,8 +59,19 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
     ];
 
-    protected function getImageAttribute(){
+    protected function getImageAttribute()
+    {
         return $this->getFirstMediaUrl();
     }
 
+    public function subscribed()
+    {
+        $expires = $this->subscription_expires_at;
+
+        if ($expires) {
+            return Carbon::parse($expires)->gt(Carbon::now());
+        }
+
+        return false;
+    }
 }

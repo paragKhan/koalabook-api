@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
-use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -20,5 +19,11 @@ class ProfileController extends Controller
         }
 
         return response()->json(auth()->user());
+    }
+
+    public function deleteProfile(){
+        auth()->user()->delete();
+
+        return response()->json(['message' => 'User account deleted']);
     }
 }
