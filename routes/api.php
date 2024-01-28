@@ -35,6 +35,7 @@ Route::prefix('user')->group(function () {
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
         Route::delete('profile', [ProfileController::class, 'deleteProfile']);
+        Route::get('profile/has-subscription', [ProfileController::class, 'hasSubscription']);
     });
 
     Route::middleware('guest_or_user')->group(function () {
