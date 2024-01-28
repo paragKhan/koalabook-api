@@ -35,8 +35,6 @@ Route::prefix('user')->group(function () {
         Route::get('profile', [ProfileController::class, 'getProfile']);
         Route::put('profile', [ProfileController::class, 'updateProfile']);
         Route::delete('profile', [ProfileController::class, 'deleteProfile']);
-        Route::get('has-subscription', [UserController::class, 'hasSubscription']);
-        Route::get('create-billing-portal-session', [UserController::class, 'createBillingPortalSession']);
     });
 
     Route::middleware('guest_or_user')->group(function () {
