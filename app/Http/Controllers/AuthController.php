@@ -16,7 +16,7 @@ class AuthController extends Controller
         $user = User::create($request->validated());
         $user->assignRole('user');
 
-        HandleUserRegistered::dispatch($user);
+        //HandleUserRegistered::dispatch($user);
 
         //todo: handle user image here
 
