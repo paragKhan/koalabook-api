@@ -7,6 +7,11 @@ use App\Http\Requests\StoreUserRequest;
 use App\Jobs\HandleUserRegistered;
 use App\Mail\SendPasswordResetOTP;
 use App\Models\User;
+use App\Rules\VerifyOTP;
+use Illuminate\Auth\Passwords\PasswordBroker;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -52,18 +57,54 @@ class AuthController extends Controller
         return response()->json(['message' => 'Invalid credentials.'], 401);
     }
 
-    public function sendUserPasswordResetOTP()
+    public function sendUserPasswordResetOTP(Request $request)
     {
-        Mail::to("xenaser923@roborena.com")->send(new SendPasswordResetOTP("xenaser923@roborena.com"));
+        $request->validate([
+            "email" => 'required|email|exists:users'
+        ]);
+
+        $email = $request->email;
+        $otp = "";
+        for($i = 0; $i < 6; $i++){
+            $otp .= rand(1, 9);
+        }
+
+        DB::table('password_reset_tokens')->updateOrInsert(["email" => $email], [
+            "token" => $otp,
+            "created_at" => now()
+        ]);
+
+        Mail::to($email)->send(new SendPasswordResetOTP( $otp));
+
+        return response()->json(["message" => "OTP sent at " . $email]);
     }
 
-    public function verifyUserPasswordResetOTP()
+    public function verifyUserPasswordResetOTP(Request $request)
     {
+        $request->validate([
+           'email' => 'required|email|exists:users',
+           'otp' => ['required', 'string', new VerifyOTP()]
+        ]);
 
+        return response()->json(['message' => "The OTP is valid."]);
     }
 
-    public function resetUserPassword()
+    public function resetUserPassword(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email|exists:users',
+            'otp' => ['required', 'string', new VerifyOTP()],
+            'password' => 'required|string|min:6|max:50'
+        ]);
 
+        $email = $request->email;
+        $password = $request->password;
+
+        $user = User::where('email', $email)->first();
+        $user->update(['password' => Hash::make($password)]);
+
+//        DB::table('password_reset_tokens')->where('email', $email)->first()->delete();
+
+        return response()->json(['message' => 'Password reset successful!']);
     }
 }

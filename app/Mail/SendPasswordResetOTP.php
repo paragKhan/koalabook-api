@@ -12,15 +12,14 @@ use Illuminate\Queue\SerializesModels;
 class SendPasswordResetOTP extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $email;
+    public $otp;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($email)
+    public function __construct($otp)
     {
-        $this->email = $email;
+        $this->otp = $otp;
     }
 
     /**
@@ -40,6 +39,7 @@ class SendPasswordResetOTP extends Mailable
     {
         return new Content(
             markdown: 'emails.sendPasswordResetOTP',
+
         );
     }
 

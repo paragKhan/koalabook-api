@@ -1,12 +1,8 @@
 <x-mail::message>
-    # Introduction
+    # {{ $otp }}
 
-    The body of your message.
+    Remember, the OTP is valid for next 30 minutes.
 
-    <x-mail::button :url="''">
-        Button Text
-    </x-mail::button>
-
-    Thanks,<br>
-    {{ config('app.name') }}
+    Thanks,
+    {{ config('app.name') }} TEAM
 </x-mail::message>
