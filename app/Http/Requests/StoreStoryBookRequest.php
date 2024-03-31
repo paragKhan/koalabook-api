@@ -25,6 +25,7 @@ class StoreStoryBookRequest extends FormRequest
         return [
             'title' => 'required|string',
             'categories' => 'required|string',
+            'playable_url' => 'required|url',
             'subscription_type' => ['required', Rule::in(['free', 'paid'])],
             'cover_image' => 'required|image|mimes:jpeg,jpg,png'
         ];

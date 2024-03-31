@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('listening_books', function (Blueprint $table) {
             $table->id();
             $table->text('title');
+            $table->text('text');
+            $table->text('playable_url');
             $table->enum('subscription_type', ['free', 'paid'])->default('free');
             $table->timestamps();
         });

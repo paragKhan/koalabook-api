@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCategories;
 use App\Models\ListeningBook;
 use App\Http\Requests\StoreListeningBookRequest;
 use App\Http\Requests\UpdateListeningBookRequest;
@@ -37,7 +38,7 @@ class ListeningBookController extends Controller
 
         $trimmed = str_replace(' ', '', $request->categories);
         $tags = explode(',', $trimmed);
-        $book->attachTags($tags, 'listening-book');
+        $book->attachTags($tags, ListeningBook::class);
 
         $book->addMediaFromRequest('cover_image')->toMediaCollection();
 
@@ -49,7 +50,7 @@ class ListeningBookController extends Controller
      */
     public function show(ListeningBook $listeningBook)
     {
-        return response()->json($listeningBook->load('page'));
+        return response()->json($listeningBook);
     }
 
     /**
@@ -60,9 +61,10 @@ class ListeningBookController extends Controller
         $listeningBook->update($request->except('categories'));
 
         if($request->has('categories')){
+            ProcessCategories::dispatch($listeningBook->categories, ListeningBook::class)->afterResponse();
             $trimmed = str_replace(' ', '', $request->categories);
             $tags = explode(',', $trimmed);
-            $listeningBook->syncTagsWithType($tags, 'listening-book');
+            $listeningBook->syncTagsWithType($tags, ListeningBook::class);
         }
 
         if($request->has('cover_image')){
@@ -78,13 +80,14 @@ class ListeningBookController extends Controller
      */
     public function destroy(ListeningBook $listeningBook)
     {
-        $listeningBook->delete();
+        ProcessCategories::dispatch($listeningBook->categories, ListeningBook::class)->afterResponse();
 
-        return response()->json($listeningBook);
+        $listeningBook->delete();
+        return response()->json(['message' => 'Listening Book Deleted!']);
     }
 
     public function getCategories(){
-        $categories = Tag::getWithType('listening-book')->pluck('name');
+        $categories = Tag::getWithType(ListeningBook::class)->pluck('name');
 
         return response()->json($categories);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCategories;
 use App\Models\ColoringBook;
 use App\Http\Requests\StoreColoringBookRequest;
 use App\Http\Requests\UpdateColoringBookRequest;
@@ -37,7 +38,7 @@ class ColoringBookController extends Controller
 
         $trimmed = str_replace(' ', '', $request->categories);
         $tags = explode(',', $trimmed);
-        $book->attachTags($tags, 'coloring-book');
+        $book->attachTags($tags, ColoringBook::class);
 
         $book->addMediaFromRequest('image')->toMediaCollection();
 
@@ -60,9 +61,10 @@ class ColoringBookController extends Controller
         $coloringBook->update($request->except('categories'));
 
         if ($request->has('categories')) {
+            ProcessCategories::dispatch($coloringBook->categories, ColoringBook::class)->afterResponse();
             $trimmed = str_replace(' ', '', $request->categories);
             $tags = explode(',', $trimmed);
-            $coloringBook->syncTagsWithType($tags, 'coloring-book');
+            $coloringBook->syncTagsWithType($tags, ColoringBook::class);
         }
 
         if ($request->has('image')) {
@@ -78,14 +80,14 @@ class ColoringBookController extends Controller
      */
     public function destroy(ColoringBook $coloringBook)
     {
+        ProcessCategories::dispatch($coloringBook->categories, ColoringBook::class)->afterResponse();
         $coloringBook->delete();
-
-        return response()->json($coloringBook);
+        return response()->json(['message' => 'Coloring Book Deleted!']);
     }
 
     public function getCategories()
     {
-        $categories = Tag::getWithType('coloring-book')->pluck('name');
+        $categories = Tag::getWithType(ColoringBook::class)->pluck('name');
 
         return response()->json($categories);
     }

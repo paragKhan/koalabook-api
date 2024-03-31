@@ -18,20 +18,31 @@ class UserSeeder extends Seeder
             "fname" => "Mr.",
             "lname" => "Admin",
             "email" => "admin@test.com",
-            "password" => Hash::make("password")
+            "password" => Hash::make("password"),
+            "address" => "",
+            "zip" => "",
+            "city" => "",
+            "country" => "",
         ]);
-
         $user1 = User::create([
             "fname" => "Test",
             "lname" => "User 1",
             "email" => "user1@test.com",
-            "password" => Hash::make("password")
+            "password" => Hash::make("password"),
+            "address" => "",
+            "zip" => "",
+            "city" => "",
+            "country" => "",
         ]);
         $user2 = User::create([
             "fname" => "Test",
             "lname" => "User 2",
             "email" => "user2@test.com",
-            "password" => Hash::make("password")
+            "password" => Hash::make("password"),
+            "address" => "",
+            "zip" => "",
+            "city" => "",
+            "country" => "",
         ]);
 
         $super_admin->assignRole(['name' => 'admin']);
