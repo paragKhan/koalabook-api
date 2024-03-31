@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCategories;
 use App\Models\StoryBook;
 use App\Http\Requests\StoreStoryBookRequest;
 use App\Http\Requests\UpdateStoryBookRequest;
@@ -38,7 +39,7 @@ class StoryBookController extends Controller
 
         $trimmed = str_replace(' ', '', $request->categories);
         $tags = explode(',', $trimmed);
-        $book->attachTags($tags, 'story-book');
+        $book->attachTags($tags, StoryBook::class);
 
         $book->addMediaFromRequest('cover_image')->toMediaCollection();
 
@@ -50,7 +51,7 @@ class StoryBookController extends Controller
      */
     public function show(StoryBook $storyBook)
     {
-        return response()->json($storyBook->load('pages'));
+        return response()->json($storyBook);
     }
 
     /**
@@ -61,9 +62,10 @@ class StoryBookController extends Controller
         $storyBook->update($request->except('categories'));
 
         if ($request->has('categories')) {
+            ProcessCategories::dispatch($storyBook->categories, StoryBook::class)->afterResponse();
             $trimmed = str_replace(' ', '', $request->categories);
             $tags = explode(',', $trimmed);
-            $storyBook->syncTagsWithType($tags, 'story-book');
+            $storyBook->syncTagsWithType($tags, StoryBook::class);
         }
 
         if ($request->has('cover_image')) {
@@ -79,13 +81,16 @@ class StoryBookController extends Controller
      */
     public function destroy(StoryBook $storyBook)
     {
+        ProcessCategories::dispatch($storyBook->categories, StoryBook::class)->afterResponse();
+
         $storyBook->delete();
 
-        return response()->json($storyBook);
+        return response()->json(['message' => 'Story Book Deleted!']);
     }
 
-    public function getCategories(){
-        $categories = Tag::getWithType('story-book')->pluck('name');
+    public function getCategories()
+    {
+        $categories = Tag::getWithType(StoryBook::class)->pluck('name');
 
         return response()->json($categories);
     }

@@ -25,8 +25,10 @@ class UpdateListeningBookRequest extends FormRequest
         return [
             'title' => 'string',
             'categories' => 'string',
+            'text' => 'string',
+            'playable_url' => 'url',
             'subscription_type' => [Rule::in(['free', 'paid'])],
-            'image' => 'image|mimes:jpeg,jpg,png'
+            'cover_image' => 'image|mimes:jpeg,jpg,png'
         ];
     }
 }

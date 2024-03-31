@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Tags\HasTags;
 
 class ListeningBook extends Model implements HasMedia
@@ -14,7 +15,9 @@ class ListeningBook extends Model implements HasMedia
 
     protected $fillable = [
         'title',
-        'subscription_type'
+        'subscription_type',
+        'text',
+        'playable_url'
     ];
 
     protected $appends = [
@@ -26,14 +29,21 @@ class ListeningBook extends Model implements HasMedia
         'media'
     ];
 
-    protected function getCoverImageAttribute(){
-        return $this->getFirstMediaUrl();
-    }
-    protected function getCategoriesAttribute(){
-        return $this->tags()->pluck('name');
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(100);
     }
 
-    public function page(){
-        return $this->morphOne(Page::class, 'pageable');
+    protected function getCoverImageAttribute(){
+        $media = $this->getFirstMedia();
+        return [
+            'original' => $media->original_url,
+            'thumb' => $media->getUrl('thumb')
+        ];
+    }
+
+    protected function getCategoriesAttribute(){
+        return $this->tags()->pluck('name');
     }
 }

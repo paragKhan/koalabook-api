@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Jobs\HandleUserRegistered;
 use App\Mail\SendPasswordResetOTP;
 use App\Models\User;
 use App\Rules\VerifyOTP;
-use Illuminate\Auth\Passwords\PasswordBroker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +18,6 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
         $user->assignRole('user');
-
-        //HandleUserRegistered::dispatch($user);
-
-        //todo: handle user image here
 
         //todo: send welcome email
 
@@ -100,10 +94,10 @@ class AuthController extends Controller
         $email = $request->email;
         $password = $request->password;
 
-        $user = User::where('email', $email)->first();
+        $user = User::where('email', $email)->latest()->first();
         $user->update(['password' => Hash::make($password)]);
 
-//        DB::table('password_reset_tokens')->where('email', $email)->first()->delete();
+        DB::table('password_reset_tokens')->where('email', $email)->latest()->first()->delete();
 
         return response()->json(['message' => 'Password reset successful!']);
     }

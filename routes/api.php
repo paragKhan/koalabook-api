@@ -55,9 +55,14 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::apiResource('users', UserController::class);
+
+        Route::get('story-books/get-categories', [StoryBookController::class, 'getCategories']);
         Route::apiResource('story-books', StoryBookController::class);
+
+        Route::get('listening-books/get-categories', [ListeningBookController::class, 'getCategories']);
         Route::apiResource('listening-books', ListeningBookController::class);
-        Route::apiResource('pages', PageController::class)->except('index');
+
+        Route::get('coloring-books/get-categories', [ColoringBookController::class, 'getCategories']);
         Route::apiResource('coloring-books', ColoringBookController::class);
     });
 });

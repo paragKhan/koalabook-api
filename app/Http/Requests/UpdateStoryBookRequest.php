@@ -25,6 +25,7 @@ class UpdateStoryBookRequest extends FormRequest
         return [
             'title' => 'string',
             'categories' => 'string',
+            'playable_url' => 'url',
             'subscription_type' => [Rule::in(['free', 'paid'])],
             'cover_image' => 'image|mimes:jpeg,jpg,png'
         ];
