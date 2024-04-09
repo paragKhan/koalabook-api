@@ -8,6 +8,7 @@ use App\Http\Controllers\RCWebhookController;
 use App\Http\Controllers\StoryBookController;
 use App\Http\Controllers\ListeningBookController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -64,6 +65,8 @@ Route::prefix('admin')->group(function () {
 
         Route::get('coloring-books/get-categories', [ColoringBookController::class, 'getCategories']);
         Route::apiResource('coloring-books', ColoringBookController::class);
+
+        Route::apiResource('vouchers', VoucherController::class);
     });
 });
 
