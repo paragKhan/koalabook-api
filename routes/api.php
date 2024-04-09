@@ -48,6 +48,8 @@ Route::prefix('user')->group(function () {
 
         Route::get('coloring-books/get-categories', [ColoringBookController::class, 'getCategories']);
         Route::apiResource('coloring-books', ColoringBookController::class)->only('index', 'show');
+
+        Route::apiResource('vouchers', VoucherController::class)->only('index', 'show');
     });
 });
 
