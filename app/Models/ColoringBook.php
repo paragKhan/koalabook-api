@@ -30,7 +30,7 @@ class ColoringBook extends Model implements HasMedia
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')
-            ->width(100);
+            ->width(250);
     }
 
     protected function getImageAttribute(){
