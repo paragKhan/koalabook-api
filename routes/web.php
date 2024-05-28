@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return "This applications is not intended to serve any html doc";
 });
+
+Route::get("/ip", function(\Illuminate\Http\Request $request){
+   dd($request->ipinfo);
+});
