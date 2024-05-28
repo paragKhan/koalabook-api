@@ -23,7 +23,7 @@ class StoreVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'country' => ['required', 'string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])],
+            'country' => ['required', 'string', Rule::in(['DE', 'AT', 'CH'])],
             'details' => 'required|string',
             'image' => 'required|image|mimes:jpeg,jpg,png'
         ];

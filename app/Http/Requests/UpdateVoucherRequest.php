@@ -23,7 +23,7 @@ class UpdateVoucherRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'country' => ['string', Rule::in(['Deutschland', 'Österreich', 'Schweiz'])],
+            'country' => ['string', Rule::in(['DE', 'AT', 'CH'])],
             'details' => 'string',
             'image' => 'image|mimes:jpeg,jpg,png'
         ];
