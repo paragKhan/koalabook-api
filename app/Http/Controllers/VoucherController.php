@@ -6,15 +6,16 @@ use App\Models\Voucher;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoucherRequest;
 use App\Http\Requests\UpdateVoucherRequest;
+use Illuminate\Http\Request;
 
 class VoucherController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $vouchers = Voucher::paginate(20);
+        $vouchers = Voucher::where('country', $request->ipinfo->country)->paginate(20);
 
         return response()->json($vouchers);
     }
